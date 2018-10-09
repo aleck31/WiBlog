@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block main_section %}
+    <h2>Search results for "{{ query }}":</h2>
+	  {% for post in results %}
+		  {% include 'post.html' %}
+	  {% endfor %}
+
+{% endblock %}

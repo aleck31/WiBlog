@@ -1,0 +1,18 @@
+{# _app/templates/singlepost.html_ #}
+{% extends "layout.html" %}
+
+
+{% block main_section %}
+
+<div class="page-header">
+    <h1>{{ post.title }}</h1>
+    <p> {{ moment(post.timestamp).format('LLL') }} </p>
+    <p>{{ post.body }}</p>
+    <p>URL: <a href="{{post_url}}">{{ post_url }}</a></p>
+</div>
+
+<div aria-label="Page nav" class="back">
+    <a class="btn btn-primary btn-large" href="{{url_for('main.ls_posts')}}">Back</a>
+</div>
+
+{% endblock %}

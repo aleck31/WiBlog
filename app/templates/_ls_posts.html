@@ -1,0 +1,25 @@
+{% for post in posts %}
+<p>
+    <a href="{{url_for('main.show_post',post_id=post.id)}}"><h3>{{post.title}}</h3></a> <br>
+    <img src="{{ post.author.avatar(28) }}"> <span>{{post.author.nickname}}</span><br>
+    Posted：{{ moment(post.timestamp).fromNow() }}
+</p>
+<p>{{post.body}}</p>
+<hr>
+{% endfor %}
+
+<nav aria-label="Page nav">
+    <ul class="pager">
+        <li>
+        {% if prev_url %}
+        <a href="{{ prev_url }}"><span aria-hidden="true">&larr;</span> Newer posts</a>
+        {% endif %}
+        </li>
+        <li>
+        {% if next_url %}
+        <a href="{{ next_url }}">Older posts <span aria-hidden="true">&rarr;</span></a>
+        {% endif %}
+        </li>
+    </ul>
+</nav>
+

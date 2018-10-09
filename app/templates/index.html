@@ -1,0 +1,11 @@
+{# _app/templates/index.html_ #}
+{% extends "layout.html" %}
+
+
+{% block main_section %}
+    <h2>Discover：</h2>
+
+    {% block posts %}
+    {% include '_ls_posts.html' %}
+    {% endblock %}
+{% endblock %}

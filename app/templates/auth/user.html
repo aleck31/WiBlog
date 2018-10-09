@@ -1,0 +1,78 @@
+{# _app/templates/user.html_ #}
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block scripts %}
+    <script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--<script src="//cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>-->
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    {{ moment.include_moment() }}
+{% endblock %}
+
+{% block navbar %}
+{{ super() }}
+{% endblock %}
+
+{% block main_section %}
+    <h2>User Profile</h2>
+    <table class="table">
+        <tr valign="top">
+            <td><img src="{{ g.user.avatar(128) }}"></td>
+            <td>
+                <h5><b>User: {{ g.user.nickname }}</b></h5>
+                {% if g.user.about_me %}
+                <p>{{ g.user.about_me }}</p>
+                {% endif %}
+                {% if g.user.last_login %}
+                    <p>Last login on: {{ moment(g.user.last_login).format('LLL') }} | {{ moment(g.user.last_login).fromNow() }}</p>
+                {% endif %}
+                <button class="btn btn-primary" data-toggle="modal" data-target="#profile">Edit Profile</button>
+            </td>
+        </tr>
+    </table>
+
+    <!-- 模态框（Modal）- Edit Profile -->
+    <div class="modal fade" id="profile" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="titleLabel">Edit Profile - {{ g.user }}</h4>
+			</div>
+            <form action="" method="post" class="form-horizontal" role="form" >
+                {{form.hidden_tag()}}
+                <div class="modal-body">
+                    <div class="form-group">
+                        {{ wtf.form_field(form.email, form_type="horizontal", horizontal_columns=('lg', 3, 7),)}}
+                    </div>
+                    <div class="form-group">
+                        {{ wtf.form_field(form.nickname, form_type="horizontal", horizontal_columns=('lg', 3, 7),)}}
+                    </div>
+                    <div class="form-group">
+                        {{ wtf.form_field(form.about_me, form_type="horizontal", horizontal_columns=('lg', 3, 7),)}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    {{form.submit(class_="btn btn-primary")}}
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+		</div>
+	    </div>
+    </div>
+
+    {% block posts %}
+    <h2>My posts list:</h2>
+    {% for post in posts %}
+    <p>
+        <img src="{{ post.author.avatar(24) }}">
+        <a href="{{url_for('main.show_post',post_id=post.id)}}"><b>{{post.title}}</b></a>
+         @ {{ moment(post.timestamp).format('YYYY-MM-DD HH:mm:ss') }}
+        {% if post.status == 0 %}(draft){% endif %}
+    </p>
+    {% endfor %}
+
+    {% endblock %}
+
+{% endblock %}

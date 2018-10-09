@@ -1,0 +1,15 @@
+{# _app/templates/layout.html_ #}
+{% extends "layout.html" %}
+
+{% block title %}Error 500 - MUSSE{% endblock %}
+
+
+{% block main_section %}
+<div class = 'page-header'>
+    <h1> 500 -  Internal server error.</h1>
+</div>
+
+<p>The administrator has been notified. Sorry for the inconvenience!</p>
+<p><a href="{{ url_for('main.index') }}">Back</a></p>
+
+{% endblock %}

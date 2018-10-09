@@ -1,0 +1,88 @@
+{# _app/templates/layout.html_ #}
+{% extends "bootstrap/base.html" %}
+
+<!-- html head -->
+{% block title %}
+    {% if title %}
+        {{ title }} - WiBlog
+    {% else %}
+        Welcome - WiBlog
+    {% endif %}
+{% endblock %}
+
+{% block metas %}
+    {{ super() }}
+    <meta charset="UTF-8">
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="short icon" href="{{ url_for('static',filename ='favicon.ico') }}" type="image/x-icon"/>
+    <link rel="icon" href="{{ url_for('static',filename ='favicon.ico') }}" type="image/x-icon"/>
+    <link href="{{ url_for('static',filename ='css/main.css') }}" rel="stylesheet">
+{% endblock %}
+
+<!-- html body -->
+{% block body %}
+    {% block navbar %}
+    <div class="navbar navbar-inverse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type = "button" class="navbar-toggle"
+                 data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">WiBLOG</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('main.ls_posts') }}">Posts</a> </li>
+                    <li><a href="{{ url_for('main.search') }}">Search</a> </li>
+                </ul>
+
+                <ul class="nav navbar-nav"  style="float:right;">
+                {% if g.user.is_authenticated %}
+                    <li><a href="{{url_for('auth.user',id=g.user.id)}}" title="Welcome, {{g.user.nickname}}"><img src="{{ g.user.avatar(28) }}"></a> </li>
+                    <li><a href="{{ url_for('auth.logout') }}">Logout</a> </li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block content %}
+<div class="container">
+    <div class="navbar-user">
+        <!--显示 flash 消息-->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+        <div class="alert alert-warning">
+            <button aria-label="Close" class="close" data-dismiss="alter" onclick="myDialog.close()">×</button>
+                {{message}}
+        </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+    </div>
+
+    <!-- layout content start -->
+    {% block main_section %}
+    {% endblock %}
+
+</div>
+    {% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+{% endblock %}
+
+{% endblock body %}
